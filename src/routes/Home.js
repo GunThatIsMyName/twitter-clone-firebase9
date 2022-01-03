@@ -20,6 +20,8 @@ function Home() {
 
     if (!image) return;
     let newImages = [];
+    let newNumber = 0;
+
     image.map((item,idx)=>{
       const storageRef = ref(storage, `/files/${item.name}`);
       const uploadTask = uploadBytesResumable(storageRef, item);
@@ -34,10 +36,11 @@ function Home() {
         () => console.log("ERROR"),
         async () => {
           const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          newNumber++;
           newImages.push(imageUrl);
-
           
-          if(idx===1){
+          console.log(newNumber,"new")
+          if(newNumber===image.length){
             console.log(newImages,"new image");
             await addDoc(collectionRef, {
               tweet,
@@ -53,10 +56,6 @@ function Home() {
     // hello world
     console.log("hit the end@");
   };
-
-  const sayHello = ()=>{
-    console.log("HELLO")
-  }
 
   const handleImageFile = (e) => {
     const { files } = e.target;

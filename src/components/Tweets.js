@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { dataBase } from "../firebase";
+import { dataBase, storage } from "../firebase";
+import { deleteObject, ref} from "firebase/storage"
 
-function Tweets({ id, tweet, creatorId, owner }) {
+function Tweets({ id, tweet, creatorId, owner, imageUrl }) {
   const [isEditMode, setEditMode] = useState(false);
   const [newTweet, setTweet] = useState(tweet);
 
@@ -10,6 +11,11 @@ function Tweets({ id, tweet, creatorId, owner }) {
     const { id } = e.target.dataset;
     const docRef = doc(dataBase, "tweets", id);
     await deleteDoc(docRef);
+
+    imageUrl.map( async(item)=>{
+      const deleteRef = ref(storage,item);
+      await deleteObject(deleteRef);
+    })
   };
 
   const handleEdit = () => {
@@ -35,6 +41,18 @@ function Tweets({ id, tweet, creatorId, owner }) {
   return (
     <div key={id}>
       <h4>{tweet}</h4>
+      {imageUrl &&
+        imageUrl.map((item) => {
+          return (
+            <img
+              key={item + id}
+              src={item}
+              alt={item + id}
+              width="50px"
+              heigth="50px"
+            />
+          );
+        })}
       {isEditMode && (
         <form onSubmit={handleSubmit}>
           <input
