@@ -15,7 +15,7 @@ const Navbar = () => {
       {loginStatus && (
         <div className="user">
           <h3 className="username">{user.name}</h3>
-            <img src={user.image} alt={user.name} />
+          <img src={user.image} alt={user.name} />
         </div>
       )}
 
@@ -33,15 +33,15 @@ const NavbarWrapper = styled.header`
 
   display: flex;
   justify-content: space-around;
-  .user{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      img{
-        border-radius:50%;
-        width:40px;
-        height:40px;
-      }
+  .user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+    }
   }
 `;
 
