@@ -9,21 +9,23 @@ export const initState = {
     name: "",
     email: "",
     image: "",
+    id:"",
   },
 };
+
 
 export const Reducer = (state, action) => {
   switch (action.type) {
     case checkUser_type:
-      const { photoURL, displayName, email } = action.payload;
+      const { photoURL, displayName, email ,uid} = action.payload;
       return {
         ...state,
         loginStatus: true,
         initLoading:false,
-        user: { ...state.user, name: displayName, email, image: photoURL },
+        user: { ...state.user, name: displayName, email, image: photoURL,id:uid },
       };
     case loginUser_type:
-        return{
+        return{ 
             ...state,initLoading:false,loginStatus:false,user:{name:"",email:"",image:""}
         }
     case userLoading_type:

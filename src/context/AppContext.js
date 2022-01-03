@@ -35,10 +35,10 @@ const AppProvider = ({ children }) => {
   const checkUser = (user) => {
     dispatch({ type: userLoading_type });
     if (user) {
-      const { photoURL, displayName, email } = user;
+      const { photoURL, displayName, email,uid } = user;
       dispatch({
         type: checkUser_type,
-        payload: { photoURL, displayName, email },
+        payload: { photoURL, displayName, email ,uid},
       });
     } else {
       dispatch({

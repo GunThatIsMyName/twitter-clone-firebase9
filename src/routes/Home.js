@@ -1,8 +1,11 @@
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import Tweets from "../components/Tweets";
+import { useAppContext } from "../context/AppContext";
 import { dataBase } from "../firebase";
 
 function Home() {
+  const { user } = useAppContext();
   const [tweet, setTweet] = useState("");
   const [tweets, setTweets] = useState([]);
 
@@ -10,10 +13,10 @@ function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const hello = await addDoc(collectionRef, {
+    await addDoc(collectionRef, {
       tweet,
+      creatorId: user.id,
     });
-    console.log(hello, "tweet");
     setTweet("");
   };
 
@@ -26,7 +29,7 @@ function Home() {
     onSnapshot(collectionRef, (snapshot) => {
       let newArr = [];
       snapshot.docs.map((item) => {
-        return newArr.push({ ...item.data() });
+        return newArr.push({ ...item.data(), id: item.id });
       });
       setTweets(newArr);
     });
@@ -34,6 +37,7 @@ function Home() {
 
   useEffect(() => {
     getTweets();
+    return () => getTweets();
   }, []);
 
   return (
@@ -45,14 +49,12 @@ function Home() {
           type="text"
           placeholder={`Whats'up`}
         />
-        <button type="submit">Tweet</button>
+        <button type="submit">submit</button>
       </form>
 
-      <div>
-        {tweets.map((item) => {
-          return <p>{item.tweet}</p>;
-        })}
-      </div>
+      {tweets.map((item) => {
+        return <Tweets key={item.id} {...item} owner={user.id} />;
+      })}
     </div>
   );
 }
