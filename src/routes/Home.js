@@ -87,6 +87,7 @@ function Home() {
   useEffect(() => {
     getTweets();
     return () => getTweets();
+    // eslint-disable-next-line
   }, []);
 
   console.log(image, "img");
